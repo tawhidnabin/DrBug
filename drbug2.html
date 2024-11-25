@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Bug - Coding Game</title>
+    <link rel="stylesheet" href="drbug2.css">
+</head>
+<body>
+
+    <!-- Welcome Screen -->
+    <div id="welcome-screen">
+        <h1>Welcome to Dr. Bug's Coding Game!</h1>
+        <button id="start-btn">Start Game</button>
+    </div>
+
+    <!-- Game Container -->
+    <div id="game-container" style="display: none;">
+        <div id="question-container">
+            <h2 id="question-text"></h2>
+            <div id="code-input-container" style="display: none;">
+                <textarea id="code-input" placeholder="Write your code here..."></textarea>
+                <button id="submit-code-btn">Submit Code</button>
+            </div>
+            <div id="answer-options" style="display: none;">
+                <!-- Multiple choice options will appear here -->
+            </div>
+        </div>
+
+        <!-- Reward Container -->
+        <div id="reward-container" style="display: none;">
+            <p id="reward-text"></p>
+            <button id="next-level-btn">Next Level</button>
+        </div>
+
+        <!-- Winner's Club Button -->
+        <button id="winner-club-btn" style="display: none;">Join Winner's Club</button>
+    </div>
+
+    <script src="drbug2.js"></script>
+</body>
+</html>
