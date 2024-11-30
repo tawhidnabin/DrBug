@@ -59,6 +59,7 @@ function loadQuestion() {
         option.innerText = currentQuestion.options[index];
         option.style.backgroundColor = "#007bff"; // Reset button color
         option.style.color = "white";
+        option.disabled = false; // Enable buttons for the new question
     });
 }
 
@@ -73,14 +74,12 @@ function selectOption(selectedIndex) {
         } else {
             option.style.backgroundColor = "#dc3545"; // Red for incorrect
         }
+        option.disabled = true; // Disable buttons to prevent multiple clicks
     });
 
     if (selectedIndex === currentQuestion.correct) {
         score++;
     }
-
-    // Disable buttons to prevent multiple clicks
-    options.forEach(option => option.setAttribute("disabled", true));
 
     // Move to the next question after a delay
     setTimeout(() => {
