@@ -1,123 +1,123 @@
-// script.js
-
-const levels = [
+// Quiz Questions
+const questions = [
     {
-        question: "What is the output of the following code?\n\nconsole.log(5 + 3);",
-        options: ["5", "8", "15"],
-        correctAnswer: "8",
-        reward: "Great job! You've passed the first level! 🎉",
-        isCodeLevel: false
+        question: "What does 6G stand for?",
+        options: [
+            "Sixth Generation Wireless",
+            "Six Geometric Layers",
+            "Six Gigabyte Bandwidth",
+            "Six General Networks"
+        ],
+        correct: 0
     },
     {
-        question: "Write a function to calculate the square of a number:function square(num) {YOUR CODE HERE}",
-        options: null,  // Code challenge
-        correctAnswer: `return num * num;`,
-        reward: "Amazing! You've completed the code! 🧑‍💻",
-        isCodeLevel: true
+        question: "What is a key feature of 6G networks?",
+        options: [
+            "1 Gbps speed",
+            "Holographic communication",
+            "4G LTE compatibility",
+            "Fiber optic dependence"
+        ],
+        correct: 1
     },
     {
-        question: "Fix the bug in the following function:\n\nfunction reverseString(str) {\n  return str.split('').reverse()join(''); }",
-        options: null,  // Code challenge
-        correctAnswer: `return str.split('').reverse().join('');`,  // This is correct code
-        reward: "Great work! You've fixed the bug! 🐞🔧",
-        isCodeLevel: true
+        question: "Which frequency range is expected for 6G?",
+        options: [
+            "1-2 GHz",
+            "10-100 GHz",
+            "100-300 GHz",
+            "Above 1 THz"
+        ],
+        correct: 3
+    },
+    {
+        question: "When is 6G expected to roll out globally?",
+        options: [
+            "2025",
+            "2030",
+            "2040",
+            "Already available"
+        ],
+        correct: 1
     }
 ];
 
-let currentLevel = 0;
+let currentQuestionIndex = 0;
+let score = 0;
 
-// Display the current level's question and options
-function displayQuestion(level) {
-    const levelData = levels[level];
-    document.getElementById("question-text").textContent = levelData.question;
+// Load the first question
+function loadQuestion() {
+    const questionElement = document.getElementById("question");
+    const options = document.querySelectorAll(".option");
 
-    if (levelData.isCodeLevel) {
-        // Show the code input area and hide the answer options
-        document.getElementById("code-input-container").style.display = "block";
-        document.getElementById("answer-options").style.display = "none";
-    } else {
-        // Show the multiple choice answers
-        document.getElementById("answer-options").innerHTML = '';
-        levelData.options.forEach(option => {
-            const button = document.createElement("button");
-            button.classList.add("answer-btn");
-            button.textContent = option;
-            button.onclick = () => checkAnswer(level, option);
-            document.getElementById("answer-options").appendChild(button);
-        });
-        document.getElementById("code-input-container").style.display = "none";
-        document.getElementById("answer-options").style.display = "block";
-    }
+    // Load the current question
+    const currentQuestion = questions[currentQuestionIndex];
+    questionElement.innerText = currentQuestion.question;
+
+    // Load options
+    options.forEach((option, index) => {
+        option.innerText = currentQuestion.options[index];
+        option.style.backgroundColor = "#007bff"; // Reset button color
+        option.style.color = "white";
+    });
 }
 
-// Check if the user's answer is correct
-function checkAnswer(level, answer) {
-    const levelData = levels[level];
-    if (levelData.isCodeLevel) {
-        const userCode = document.getElementById("code-input").value.trim();
-        if (userCode === levelData.correctAnswer) {
-            showReward(levelData.reward);
+// Handle option selection
+function selectOption(selectedIndex) {
+    const currentQuestion = questions[currentQuestionIndex];
+
+    const options = document.querySelectorAll(".option");
+    options.forEach((option, index) => {
+        if (index === currentQuestion.correct) {
+            option.style.backgroundColor = "#28a745"; // Green for correct
         } else {
-            alert("Oops! The code doesn't seem right. Try again.");
+            option.style.backgroundColor = "#dc3545"; // Red for incorrect
         }
-    } else {
-        if (answer === levelData.correctAnswer) {
-            showReward(levelData.reward);
+    });
+
+    if (selectedIndex === currentQuestion.correct) {
+        score++;
+    }
+
+    // Disable buttons to prevent multiple clicks
+    options.forEach(option => option.setAttribute("disabled", true));
+
+    // Move to the next question after a delay
+    setTimeout(() => {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.length) {
+            loadQuestion();
         } else {
-            alert("Oops! Try again.");
+            showResults();
         }
-    }
+    }, 1000);
 }
 
-// Show the reward and the next level button
-function showReward(rewardMessage) {
-    document.getElementById("reward-text").textContent = rewardMessage;
-    document.getElementById("question-container").style.display = "none";
-    document.getElementById("reward-container").style.display = "block";
+// Show results
+function showResults() {
+    const quizContainer = document.getElementById("quiz-container");
+    const resultContainer = document.getElementById("result-container");
+    const resultText = document.getElementById("result");
 
-    if (currentLevel === levels.length - 1) {
-        document.getElementById("winner-club-btn").style.display = "inline-block";
-    }
+    quizContainer.style.display = "none";
+    resultContainer.style.display = "block";
+
+    resultText.innerText = `You scored ${score} out of ${questions.length}!`;
 }
 
-// Move to the next level
-document.getElementById("next-level-btn").onclick = () => {
-    if (currentLevel < levels.length - 1) {
-        currentLevel++;
-        document.getElementById("reward-container").style.display = "none";
-        document.getElementById("question-container").style.display = "block";
-        displayQuestion(currentLevel);
-    } else {
-        alert("Congratulations! You've completed all levels!");
-    }
-};
+// Restart the quiz
+function restartQuiz() {
+    currentQuestionIndex = 0;
+    score = 0;
 
-// Start the game
-document.getElementById("start-btn").onclick = () => {
-    document.getElementById("welcome-screen").style.display = "none";
-    document.getElementById("game-container").style.display = "block";
-    displayQuestion(currentLevel); // Display the first question
-};
+    const quizContainer = document.getElementById("quiz-container");
+    const resultContainer = document.getElementById("result-container");
 
-// Join Winner's Club
-document.getElementById("winner-club-btn").onclick = () => {
-    alert("Congratulations! You've joined the Winner's Club! 🏆🎉");
-};
+    quizContainer.style.display = "block";
+    resultContainer.style.display = "none";
 
-// Event listener for submitting code
-document.getElementById("submit-code-btn").onclick = function() {
-    const userCode = document.getElementById("code-input").value.trim();
-    const levelData = levels[currentLevel];
+    loadQuestion();
+}
 
-    // Check if the code is correct
-    if (userCode === levelData.correctAnswer) {
-        showReward(levelData.reward);
-    } else {
-        alert("Oops! The code doesn't seem right. Try again.");
-    }
-};
-
-// Initialize game with welcome screen
-window.onload = () => {
-    document.getElementById("welcome-screen").style.display = "block"; // Show the welcome screen
-};
+// Initialize the quiz
+loadQuestion();
